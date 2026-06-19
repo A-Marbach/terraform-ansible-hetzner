@@ -23,3 +23,24 @@
         name: nginx
         state: started
         enabled: true
+
+    - name: Create admin user
+      user:
+        name: artur
+        groups: sudo
+        append: yes
+        shell: /bin/bash
+        create_home: yes
+
+    - name: Add authorized key for artur
+      authorized_key:
+        user: artur
+        key: "{{ lookup('file', 'files/artur.pub') }}"
+        
+    - name: Allow passwordless sudo for artur
+      copy:
+        dest: /etc/sudoers.d/artur
+        content: "artur ALL=(ALL) NOPASSWD:ALL\n"
+        owner: root
+        group: root
+        mode: "0440"
