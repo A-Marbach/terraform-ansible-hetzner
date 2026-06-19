@@ -1,0 +1,25 @@
+---
+- name: Bootstrap Linux Server
+  hosts: webserver
+  become: true
+
+  tasks:
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Upgrade packages
+      apt:
+        upgrade: dist
+
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Ensure nginx is running
+      service:
+        name: nginx
+        state: started
+        enabled: true
