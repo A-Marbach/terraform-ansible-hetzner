@@ -1,7 +1,5 @@
 # Terraform-Ansible-Hetzner
 
-This repository contains an Infrastructure as Code (IaC) project for provisioning and configuring Linux servers on Hetzner Cloud using Terraform and Ansible.
-
 The project automates provisioning and configuration of Ubuntu servers on Hetzner Cloud using Terraform and Ansible.
 ---
 
