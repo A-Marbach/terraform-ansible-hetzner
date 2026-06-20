@@ -2,8 +2,7 @@
 
 This repository contains an Infrastructure as Code (IaC) project for provisioning and configuring Linux servers on Hetzner Cloud using Terraform and Ansible.
 
-The project is designed to automate server deployment, operating system configuration, user management, security hardening, and service installation following modern Infrastructure as Code and Linux administration best practices.
-
+The project automates provisioning and configuration of Ubuntu servers on Hetzner Cloud using Terraform and Ansible.
 ---
 
 ## Table of Contents
@@ -13,17 +12,14 @@ The project is designed to automate server deployment, operating system configur
 - [Terraform](#terraform)
 - [Ansible](#ansible)
 - [Usage](#usage)
-- [Security](#security)
 - [Project Structure](#project-structure)
-- [Future Improvements](#future-improvements)
 - [Troubleshooting](#troubleshooting)
-- [Learning Goals](#learning-goals)
 
 ---
 
-# Quickstart
+## Quickstart
 
-## Prerequisites
+### Prerequisites
 
 * Terraform
 * Ansible
@@ -31,7 +27,7 @@ The project is designed to automate server deployment, operating system configur
 * Hetzner API Token
 * SSH Key Pair
 
-## Steps
+### Steps
 
 Clone this repository:
 
@@ -86,7 +82,7 @@ ssh artur@<server_ip>
 
 ---
 
-# Architecture
+## Architecture
 
 The project provisions and configures the following infrastructure:
 
@@ -94,38 +90,34 @@ The project provisions and configures the following infrastructure:
 Hetzner Cloud
 │
 ├── Ubuntu 24.04 Server
-├── Cloud Firewall
-├── SSH Key Authentication
-│
-└── Ansible Configuration
-    ├── System Updates
-    ├── Nginx Installation
-    ├── Fail2Ban Installation
-    ├── Admin User Creation
-    ├── SSH Key Deployment
-    └── Passwordless Sudo
+├── Firewall
+└── Ansible
+    ├── Nginx
+    ├── Fail2Ban 
+    ├── Admin User 
+    ├── SSH Access
 ```
 
 ---
 
-# Terraform
+## Terraform
 
 Terraform is responsible for infrastructure provisioning.
 
-## Resources
+### Resources
 
 * Ubuntu 24.04 Server
 * Hetzner Firewall
 * SSH Key Injection
 * Outputs for Ansible Inventory
 
-## Deployment
+### Deployment
 
 ```bash
 terraform apply
 ```
 
-## Destroy Infrastructure
+### Destroy Infrastructure
 
 ```bash
 terraform destroy
@@ -133,30 +125,30 @@ terraform destroy
 
 ---
 
-# Ansible
+## Ansible
 
 Ansible is responsible for server configuration and software deployment.
 
-## Automated Tasks
+### Automated Tasks
 
-### System Management
+#### System Management
 
 * Update package cache
 * Upgrade installed packages
 
-### Web Server
+#### Web Server
 
 * Install Nginx
 * Enable Nginx service
 * Start Nginx automatically
 
-### Security
+#### Security
 
 * Install Fail2Ban
 * Enable Fail2Ban service
 * Configure SSH key authentication
 
-### User Management
+#### User Management
 
 * Create administrative user
 * Deploy authorized SSH key
@@ -164,7 +156,7 @@ Ansible is responsible for server configuration and software deployment.
 
 ---
 
-# Usage
+## Usage
 
 Verify server access:
 
@@ -200,25 +192,8 @@ http://<server_ip>
 
 ---
 
-# Security
 
-## Best Practices
-
-❌ Do not commit API tokens, SSH private keys, passwords, or sensitive credentials.
-
-❌ Do not hardcode infrastructure secrets in Terraform files.
-
-✅ Store Hetzner API tokens in Terraform variables or environment variables.
-
-✅ Use SSH key authentication instead of passwords.
-
-✅ Use Fail2Ban to mitigate brute-force attacks.
-
-✅ Use Infrastructure as Code for repeatable deployments.
-
----
-
-# Project Structure
+## Project Structure
 
 ```text
 terraform-ansible-hetzner/
@@ -241,25 +216,10 @@ terraform-ansible-hetzner/
 
 ---
 
-# Future Improvements
 
-Planned features:
+## Troubleshooting
 
-* Custom Nginx Landing Page
-* DNS Configuration
-* HTTPS with Let's Encrypt
-* Automatic Security Updates
-* Monitoring Stack
-* Kubernetes (K3s)
-* GitHub Actions CI/CD Pipeline
-* Ansible Roles
-* Multi-Server Deployments
-
----
-
-# Troubleshooting
-
-## SSH Host Key Changed
+### SSH Host Key Changed
 
 Remove old host key:
 
@@ -273,7 +233,7 @@ Reconnect:
 ssh root@<server_ip>
 ```
 
-## Ansible Cannot Connect
+### Ansible Cannot Connect
 
 Verify inventory:
 
@@ -287,7 +247,7 @@ Verify SSH connectivity:
 ssh artur@<server_ip>
 ```
 
-## Check Service Status
+### Check Service Status
 
 ```bash
 systemctl status nginx
@@ -297,21 +257,6 @@ systemctl status fail2ban
 
 ---
 
-# Learning Goals
 
-This project demonstrates practical skills in:
-
-* Linux Administration
-* Infrastructure as Code
-* Terraform
-* Ansible
-* Server Provisioning
-* User Management
-* Service Management
-* Cloud Infrastructure
-* Security Fundamentals
-* DevOps Automation
-
----
 
 
