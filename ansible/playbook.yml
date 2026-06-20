@@ -1,0 +1,59 @@
+---
+- name: Bootstrap Linux Server
+  hosts: webserver
+  become: true
+
+  tasks:
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Upgrade packages
+      apt:
+        upgrade: dist
+
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Ensure nginx is running
+      service:
+        name: nginx
+        state: started
+        enabled: true
+
+    - name: Install fail2ban
+      apt:
+        name: fail2ban
+        state: present
+
+    - name: Ensure fail2ban is running
+      service:
+        name: fail2ban
+        state: started
+        enabled: true
+        
+    - name: Create admin user
+      user:
+        name: artur
+        groups: sudo
+        append: yes
+        shell: /bin/bash
+        create_home: yes
+
+    - name: Add authorized key for artur
+      authorized_key:
+        user: artur
+        key: "{{ lookup('file', 'files/artur.pub') }}"
+
+    - name: Allow passwordless sudo for artur
+      copy:
+        dest: /etc/sudoers.d/artur
+        content: "artur ALL=(ALL) NOPASSWD:ALL\n"
+        owner: root
+        group: root
+        mode: "0440"
+
+    
