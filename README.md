@@ -1,7 +1,6 @@
 # Terraform-Ansible-Hetzner
 
 This project automates the provisioning, configuration and basic hardening of Ubuntu 24.04 servers on Hetzner Cloud using Terraform and Ansible.
-
 ---
 
 ## Table of Contents
