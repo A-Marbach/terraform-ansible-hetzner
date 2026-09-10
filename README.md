@@ -1,6 +1,7 @@
-# Terraform + Ansible Infrastructure Automation
+# Terraform-Ansible-Hetzner
 
 This project automates the provisioning, configuration and basic hardening of Ubuntu 24.04 servers on Hetzner Cloud using Terraform and Ansible.
+
 ---
 
 ## Table of Contents
@@ -17,56 +18,74 @@ This project automates the provisioning, configuration and basic hardening of Ub
 
 ---
 
-## Features
+## Quickstart
 
-- Provision Ubuntu 24.04 servers on Hetzner Cloud
-- Configure Hetzner Firewall
-- Inject SSH public keys
-- Create administrative users
-- Configure passwordless sudo
-- Install and configure NGINX
-- Install and configure Fail2Ban
-- Harden SSH access
-- Generate dynamic Ansible inventory
-- Fully automated server provisioning
+### Prerequisites
+
+* Terraform
+* Ansible
+* Hetzner Cloud Account
+* Hetzner API Token
+* SSH Key Pair
+
+### Steps
+
+Clone this repository:
+
+```bash
+git clone git@github.com:A-Marbach/terraform-ansible-hetzner.git
+cd terraform-ansible-hetzner
+```
+
+Configure your Terraform variables:
+
+```bash
+cp terraform.tfvars.example terraform.tfvars
+```
+
+Insert your Hetzner API token:
+
+```hcl
+hcloud_token = "your-token"
+```
+
+Initialize Terraform:
+
+```bash
+terraform init
+```
+
+Deploy infrastructure:
+
+```bash
+terraform apply
+```
+
+Generate Ansible inventory:
+
+```bash
+terraform output -raw ansible_inventory > ../ansible/inventories/hosts.ini
+```
+
+Run Ansible provisioning:
+
+```bash
+cd ../ansible
+
+ansible-playbook -i inventories/hosts.ini playbook.yml
+```
+
+Connect to the server:
+
+```bash
+ssh artur@<server_ip>
+```
 
 ---
 
 ## Architecture
 
-```text
-                Terraform
-                    │
-                    ▼
-          Hetzner Cloud Infrastructure
-                    │
-                    ▼
-             Ubuntu 24.04 Server
-                    │
-                    ▼
-                 Ansible
-        ├── User Management
-        ├── SSH Configuration
-        ├── NGINX
-        ├── Fail2Ban
-        └── System Updates
-```
-
----
-
-## Technology Stack
-
-- Terraform
-- Ansible
-- Ubuntu 24.04
-- Hetzner Cloud
-- NGINX
-- Fail2Ban
-- SSH
-
----
-
-## Workflow
+The project provisions and configures the following infrastructure:
 
 ```text
 Terraform
@@ -195,89 +214,53 @@ terraform-ansible-hetzner/
 │
 ├── ansible/
 │   ├── playbook.yml
-│   ├── inventories/
-│   ├── roles/
-│   └── files/
+│   ├── files/
+│   │   └── artur.pub
+│   └── inventories/
+│       └── hosts.ini
 │
 └── README.md
 ```
 
 ---
 
-## Getting Started
 
-### Prerequisites
+## Troubleshooting
 
-- Terraform
-- Ansible
-- Hetzner Cloud Account
-- Hetzner API Token
-- SSH Key Pair
+### SSH Host Key Changed
 
-### Clone the repository
+Remove old host key:
 
 ```bash
-git clone git@github.com:A-Marbach/terraform-ansible-hetzner.git
-cd terraform-ansible-hetzner
+ssh-keygen -f ~/.ssh/known_hosts -R <server_ip>
 ```
 
-### Configure Terraform
+Reconnect:
 
 ```bash
-cp terraform.tfvars.example terraform.tfvars
+ssh root@<server_ip>
 ```
 
-Insert your Hetzner API Token.
+### Ansible Cannot Connect
 
-```hcl
-hcloud_token = "your-token"
-```
-
-### Initialize Terraform
+Verify inventory:
 
 ```bash
-terraform init
+cat inventories/hosts.ini
 ```
 
-### Deploy Infrastructure
-
-```bash
-terraform apply
-```
-
-### Generate the Ansible Inventory
-
-```bash
-terraform output -raw ansible_inventory > ../ansible/inventories/hosts.ini
-```
-
-### Configure the Server
-
-```bash
-cd ../ansible
-
-ansible-playbook -i inventories/hosts.ini playbook.yml
-```
-
----
-
-## Verification
-
-Verify SSH connectivity.
+Verify SSH connectivity:
 
 ```bash
 ssh artur@<server_ip>
 ```
 
-Verify NGINX.
+### Check Service Status
 
 ```bash
 systemctl status nginx
 journalctl -u nginx
 
-Verify Fail2Ban.
-
-```bash
 systemctl status fail2ban
 journalctl -u fail2ban
 fail2ban-client status
@@ -296,33 +279,5 @@ fail2ban-client status
 - Troubleshooting with journalctl
 - Infrastructure Automation
 
-- Infrastructure as Code
-- Linux Administration
-- Configuration Management
-- Cloud Provisioning
-- Server Hardening
-- SSH Automation
-- Infrastructure Automation
 
----
 
-## Screenshots
-
-Screenshots of the deployment process can be added here.
-
-- Terraform Apply
-- Hetzner Cloud
-- SSH Login
-- NGINX
-- Fail2Ban
-- Terminal Output
-
----
-
-## Future Improvements
-
-- Multi-server deployments
-- Modular Terraform structure
-- Reusable Ansible roles
-- HTTPS with Let's Encrypt
-- Monitoring integration
