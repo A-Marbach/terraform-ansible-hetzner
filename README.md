@@ -1,8 +1,19 @@
 # Terraform + Ansible Infrastructure Automation
 
-Automated provisioning and configuration of secure Ubuntu servers on Hetzner Cloud using **Terraform** and **Ansible**.
+This project automates the provisioning, configuration and basic hardening of Ubuntu 24.04 servers on Hetzner Cloud using Terraform and Ansible.
+---
 
-This project demonstrates how Infrastructure as Code (IaC) can be used to provision cloud resources and automatically configure production-ready Linux servers.
+## Table of Contents
+
+- [Quickstart](#quickstart)
+- [Architecture](#architecture)
+- [Terraform](#terraform)
+- [Ansible](#ansible)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [Troubleshooting](#troubleshooting)
+- [Skills Demonstrated](#skills-demonstrated)
+
 
 ---
 
@@ -58,22 +69,118 @@ This project demonstrates how Infrastructure as Code (IaC) can be used to provis
 ## Workflow
 
 ```text
-Terraform Apply
+Terraform
+│
+├── Hetzner Cloud Server
+├── Hetzner Firewall
+└── SSH Key
         │
         ▼
-Provision Cloud Server
+Ubuntu 24.04 Server
         │
         ▼
-Generate Ansible Inventory
-        │
-        ▼
-Run Ansible Playbook
-        │
-        ▼
-Production Ready Linux Server
+Ansible
+├── Admin User
+├── SSH Configuration
+├── NGINX
+├── Fail2Ban
+└── System Updates
 ```
 
 ---
+
+## Terraform
+
+Terraform is responsible for infrastructure provisioning.
+
+### Resources
+
+* Ubuntu 24.04 Server
+* Hetzner Firewall
+* SSH Key Injection
+* Outputs for Ansible Inventory
+
+### Deployment
+
+```bash
+terraform apply
+```
+
+### Destroy Infrastructure
+
+```bash
+terraform destroy
+```
+
+---
+
+## Ansible
+
+Ansible is responsible for server configuration and software deployment.
+
+### Automated Tasks
+
+#### System Management
+
+* Update package cache
+* Upgrade installed packages
+
+#### Web Server
+
+* Install NGINX
+* Enable NGINX service
+* Start NGINX automatically
+
+#### Security
+
+* Install Fail2Ban
+* Enable Fail2Ban service
+* Configure SSH key authentication
+
+#### User Management
+
+* Create administrative user
+* Deploy authorized SSH key
+* Configure passwordless sudo access
+
+---
+
+## Usage
+
+Verify server access:
+
+```bash
+ssh artur@<server_ip>
+```
+
+Become root:
+
+```bash
+sudo -i
+```
+
+Verify NGINX:
+
+```bash
+systemctl status nginx
+```
+
+Verify Fail2Ban:
+
+```bash
+systemctl status fail2ban
+
+fail2ban-client status
+```
+
+Open the server in your browser:
+
+```text
+http://<server_ip>
+```
+
+---
+
 
 ## Project Structure
 
@@ -166,25 +273,28 @@ Verify NGINX.
 
 ```bash
 systemctl status nginx
-```
+journalctl -u nginx
 
 Verify Fail2Ban.
 
 ```bash
 systemctl status fail2ban
-
+journalctl -u fail2ban
 fail2ban-client status
-```
-
-Open the server in your browser.
-
-```
-http://<server_ip>
 ```
 
 ---
 
 ## Skills Demonstrated
+
+- Linux Administration
+- Infrastructure as Code
+- Configuration Management
+- SSH and User Management
+- Firewall Configuration
+- Service Management with systemd
+- Troubleshooting with journalctl
+- Infrastructure Automation
 
 - Infrastructure as Code
 - Linux Administration
